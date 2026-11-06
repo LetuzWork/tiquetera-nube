@@ -155,11 +155,12 @@ h3 {
 }
 
 .tq-ponchado > span {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--tq-papel);
-  box-shadow: inset 1px 1px 0 var(--tq-tinta-tenue);
+  background: var(--tq-papel-hundido);
+  border: 1.5px solid var(--tq-tinta-suave);
+  box-shadow: inset 1.5px 1.5px 0 var(--tq-tinta-tenue);
 }
 
 .tq-boton {

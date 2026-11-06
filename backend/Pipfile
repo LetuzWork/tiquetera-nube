@@ -22,7 +22,7 @@ ruff = "*"
 python_version = "3.12"
 
 [scripts]
-dev = "uvicorn app.main:app --reload --port 8000"
+dev = "uvicorn app.main:create_app --factory --reload --port 8000"
 seed = "python -m scripts.seed"
 test = "pytest -q"
 lint = "ruff check ."
