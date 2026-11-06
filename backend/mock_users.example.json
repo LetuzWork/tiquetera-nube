@@ -1,0 +1,6 @@
+[
+  { "usuario": "u.admin", "password": "Lab-Admin-2026", "nombre": "Ana Administradora", "mail": "u.admin@tiquetera.local", "grupos": ["GG-TQ-Admin"] },
+  { "usuario": "u.operador", "password": "Lab-Oper-2026", "nombre": "Omar Operador", "mail": "u.operador@tiquetera.local", "grupos": ["GG-TQ-Operador"] },
+  { "usuario": "u.usuario", "password": "Lab-User-2026", "nombre": "Ursula Usuaria", "mail": "u.usuario@tiquetera.local", "grupos": ["GG-TQ-Usuario"] },
+  { "usuario": "u.consulta", "password": "Lab-Cons-2026", "nombre": "Carlos Consulta", "mail": "u.consulta@tiquetera.local", "grupos": ["GG-TQ-Consulta"] }
+]

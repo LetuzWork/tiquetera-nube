@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+pydantic = "*"
+pydantic-settings = "*"
+ldap3 = "*"
+pyjwt = "*"
+filelock = "*"
+tzdata = "*"
+
+[dev-packages]
+pytest = "*"
+httpx = "*"
+ruff = "*"
+
+[requires]
+python_version = "3.12"
+
+[scripts]
+dev = "uvicorn app.main:app --reload --port 8000"
+seed = "python -m scripts.seed"
+test = "pytest -q"
+lint = "ruff check ."

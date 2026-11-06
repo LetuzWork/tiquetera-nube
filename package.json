@@ -1,0 +1,13 @@
+{
+  "name": "tiquetera-nube",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n BE,FE -c blue,red \"npm:dev:be\" \"npm:dev:fe\"",
+    "dev:be": "cd backend && pipenv run dev",
+    "dev:fe": "npm --prefix frontend run dev",
+    "setup": "npm install && cd backend && pipenv install --dev && cd .. && npm --prefix frontend install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

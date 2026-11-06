@@ -1,0 +1,12 @@
+.env
+*.env.local
+backend/certs/
+backend/data/
+backend/mock_users.json
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+node_modules/
+frontend/dist/
+*.log
