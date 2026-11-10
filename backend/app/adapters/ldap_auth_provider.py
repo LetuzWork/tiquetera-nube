@@ -32,6 +32,7 @@ class ConfigLdap:
     base_usuarios: str
     grupos: tuple[str, ...]
     permitir_sin_tls: bool = False
+    nombre_tls: str = ""
 
 
 class LdapAuthProvider:
@@ -132,7 +133,8 @@ class LdapAuthProvider:
         tls = None
         if seguro:
             ca = str(self._cfg.ca_cert) if self._cfg.ca_cert else None
-            tls = Tls(validate=ssl.CERT_REQUIRED, version=ssl.PROTOCOL_TLS_CLIENT, ca_certs_file=ca)
+            nombres = [self._cfg.nombre_tls] if self._cfg.nombre_tls else None
+            tls = Tls(validate=ssl.CERT_REQUIRED, version=ssl.PROTOCOL_TLS_CLIENT, ca_certs_file=ca, valid_names=nombres)
         return Server(
             url.hostname,
             port=url.port or (636 if seguro else 389),

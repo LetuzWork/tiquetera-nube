@@ -24,5 +24,6 @@ python_version = "3.12"
 [scripts]
 dev = "uvicorn app.main:create_app --factory --reload --port 8000"
 seed = "python -m scripts.seed"
+probar-ldap = "python -m scripts.probar_ldap"
 test = "pytest -q"
 lint = "ruff check ."

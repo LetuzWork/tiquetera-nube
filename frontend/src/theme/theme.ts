@@ -43,7 +43,7 @@ export const estados: Record<Estado, PresentacionEstado> = {
   ABIERTO: { etiqueta: "Abierto", color: colores.sello, tachado: false },
   EN_PROGRESO: { etiqueta: "En progreso", color: colores.carbonico, tachado: false },
   RESUELTO: { etiqueta: "Resuelto", color: colores.contable, tachado: false },
-  CERRADO: { etiqueta: "Archivado", color: colores.tintaTenue, tachado: true },
+  CERRADO: { etiqueta: "Cerrado", color: colores.tintaTenue, tachado: true },
 };
 
 export const prioridades: Record<Prioridad, PresentacionPrioridad> = {

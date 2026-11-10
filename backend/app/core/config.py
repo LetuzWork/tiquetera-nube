@@ -28,6 +28,7 @@ class Settings(BaseSettings):
 
     ldap_uri: str = "ldaps://dc01.tiquetera.local:636"
     ldap_ca_cert_path: Path | None = None
+    ldap_tls_nombre: str = ""
     ldap_timeout_seconds: int = Field(default=5, ge=1, le=60)
     ldap_base_dn: str = ""
     ldap_user_search_base: str = ""

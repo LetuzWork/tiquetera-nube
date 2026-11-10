@@ -1,7 +1,21 @@
-# Laboratorio de Active Directory en VirtualBox
+# Laboratorio de Active Directory
 
-Guía para montar el controlador de dominio contra el que autentica la Tiquetera Nube. Los scripts están en `scripts/ad/`.
+La ticketera autentica contra el controlador de dominio `srv-ad` que está en Azure. La guía de VirtualBox de más abajo queda como alternativa para montarlo local.
 
+## 0. Laboratorio en Azure (el que se usa)
+
+| Dato | Valor |
+|---|---|
+| VM | `srv-ad`, Windows Server 2022, grupo de recursos `rg-tps-nube`, región Brazil South |
+| Dominio | `tpsnube.local` (NetBIOS `TPSNUBE`) |
+| IP pública | `20.226.44.141` (fija). RDP y LDAPS abiertos solo para la IP de quien administra |
+| LDAPS | `ldaps://20.226.44.141:636`, certificado autofirmado para `srv-ad.tpsnube.local` |
+| Cuenta de servicio | `svc-tiquetera` en `OU=Servicios,OU=Tiquetera,DC=tpsnube,DC=local` |
+| Grupos de rol | `GG-TQ-Admin`, `GG-TQ-Operador`, `GG-TQ-Usuario`, `GG-TQ-Consulta` en `OU=Grupos,OU=Tiquetera` |
+
+Se prepara con un solo script desde Azure Cloud Shell, sin entrar al servidor: `scripts/azure/preparar-ad-azure.sh`. Reutiliza los scripts `03` y `04` de esta guía con el dominio `tpsnube.local`, genera las claves al azar (`-GenerarClaves`) y usa un certificado autofirmado (`-Autofirmado`) en lugar de instalar una CA. Los pasos exactos están en `COMANDOS.md`, sección 8.
+
+Como la app se conecta por IP y el certificado está emitido para `srv-ad.tpsnube.local`, la variable `LDAP_TLS_NOMBRE` le dice al backend contra qué nombre validar el certificado. Así no hace falta tocar el archivo `hosts` de la compu, que necesita permisos de administrador.
 ## 1. Resultado esperado
 
 | Dato | Valor |

@@ -104,5 +104,6 @@ def _proveedor(settings: Settings, mapeador: MapeadorRoles) -> ProveedorDirector
             base_usuarios=settings.ldap_user_search_base or settings.ldap_base_dn,
             grupos=tuple(mapeador.grupos_de(list(Rol))),
             permitir_sin_tls=settings.app_env == "development",
+            nombre_tls=settings.ldap_tls_nombre,
         )
     )

@@ -143,7 +143,7 @@ export function DetalleTicket() {
             <div className="bloque">
               <span className="etiqueta">Cambiar estado</span>
               <div className="botonera">
-                {ticket.acciones.length === 0 && <span className="tenue">Archivado. Solo Admin puede reabrirlo.</span>}
+                {ticket.acciones.length === 0 && <span className="tenue">Cerrado. Solo Admin puede reabrirlo.</span>}
                 {ticket.acciones.map((destino: Estado) => (
                   <button
                     key={destino}

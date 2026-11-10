@@ -53,9 +53,9 @@ export function describirEvento(e: Evento): string {
 }
 
 export function etiquetaAccion(actual: Estado, destino: Estado): string {
-  if (destino === "CERRADO") return "Archivar talón";
+  if (destino === "CERRADO") return "Cerrar ticket";
   if (destino === "RESUELTO") return "Marcar resuelto";
   if (actual === "ABIERTO") return "Tomar";
-  if (actual === "CERRADO") return "Reabrir archivado";
+  if (actual === "CERRADO") return "Reabrir cerrado";
   return "Reabrir";
 }
