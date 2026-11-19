@@ -1,0 +1,37 @@
+.indicador {
+  --tq-color-estado: var(--tq-estado-abierto);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  min-width: 0;
+  color: var(--tq-texto);
+  font: var(--tq-tipo-secundario);
+  font-weight: 500;
+  letter-spacing: var(--tq-tracking-secundario);
+}
+
+.indicador[data-estado="EN_PROGRESO"] {
+  --tq-color-estado: var(--tq-estado-progreso);
+}
+
+.indicador[data-estado="RESUELTO"] {
+  --tq-color-estado: var(--tq-estado-resuelto);
+}
+
+.indicador[data-estado="CERRADO"] {
+  --tq-color-estado: var(--tq-estado-cerrado);
+}
+
+.punto {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--tq-color-estado);
+}
+
+.texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

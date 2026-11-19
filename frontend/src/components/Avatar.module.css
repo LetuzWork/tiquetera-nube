@@ -1,0 +1,19 @@
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--tq-texto);
+  font: 600 0.625rem/1 var(--tq-fuente);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.avatar[data-variante="claro"] {
+  background: linear-gradient(var(--tq-acento-suave), var(--tq-acento-suave)), var(--tq-superficie);
+  color: var(--tq-acento);
+}
