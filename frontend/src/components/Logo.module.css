@@ -1,0 +1,18 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.anillo {
+  flex: none;
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.nombre {
+  font: 650 1.0625rem/1.2 var(--tq-fuente);
+  letter-spacing: -0.01em;
+}
