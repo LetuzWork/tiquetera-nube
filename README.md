@@ -6,7 +6,7 @@ Ticketera de soporte con autenticación contra Active Directory, roles por grupo
 |---|---|
 | [CONSIGNA.md](CONSIGNA.md) | enunciado del TP y requisitos agregados |
 | [docs/PLAN.md](docs/PLAN.md) | arquitectura SOLID, dominio, permisos, API, seguridad, fases |
-| [docs/DISENO.md](docs/DISENO.md) | identidad visual "Talonario": paleta, tipografía, componentes |
+| [docs/DISENO.md](docs/DISENO.md) | identidad visual "Cielo": la jornada como luz, tokens, tipografía, componentes |
 | [docs/AD_SETUP.md](docs/AD_SETUP.md) | laboratorio de AD en Azure (y alternativa en VirtualBox) |
 | [COMANDOS.md](COMANDOS.md) | todos los comandos para instalar, levantar, probar, usar la API y administrar el AD |
 
@@ -43,10 +43,22 @@ Para probar o capturar evidencias a cualquier hora, en `backend/.env` (solo `APP
 
 ```
 CLOCK_OVERRIDE=2026-11-05T15:30:00   dentro de la franja
-CLOCK_OVERRIDE=2026-11-05T19:30:00   ventanilla cerrada
+CLOCK_OVERRIDE=2026-11-05T19:30:00   fuera del horario
 ```
 
 La hora simulada avanza normalmente desde ese punto. Dejar vacío para usar el reloj real.
+
+## Modo demostración para la presentación
+
+Para mostrar la app a la noche sin tocar `.env` en cada cambio, hay un reloj de demostración que se maneja desde la interfaz:
+
+1. En `backend/.env`, con `APP_ENV=development`, poner `DEMO_RELOJ=true` y reiniciar el backend. Con `APP_ENV=production` la configuración no arranca.
+2. Abajo a la izquierda, en el inicio de sesión y dentro de la app, aparece el botón **Demo · HH:MM** con la hora del servidor. Al abrirlo trae 08:00, 12:00, 17:55 y 19:30, el campo **Otra hora** con **Aplicar**, y **Hora real**.
+3. La hora elegida es la de hoy y rige en todo el backend: franja, ingreso, sesiones, bloqueo de intentos y fechas de los tickets. Desde ahí avanza sola.
+
+Por ejemplo, 17:55 muestra "Cierra en 5 min", y pasar de 12:00 a 19:30 con la sesión abierta muestra "La jornada terminó". **Hora real** vuelve a la hora del sistema, aunque haya `CLOCK_OVERRIDE`. Al reiniciar el backend se vuelve a `CLOCK_OVERRIDE` o a la hora real.
+
+Cambia solo la hora, no el día: si la presentación cae en fin de semana, sumar `CLOCK_OVERRIDE` con un día hábil y el reloj arranca ahí. Los endpoints (`/api/demo/reloj`) no piden sesión, porque hacen falta antes de ingresar; fuera de la presentación, dejar `DEMO_RELOJ=false`: así no existen y el botón no aparece.
 
 ## Tests
 
@@ -56,6 +68,7 @@ pipenv run test
 pipenv run lint
 cd ..\frontend
 npm run typecheck
+npm run test
 ```
 
 Por separado, backend:
