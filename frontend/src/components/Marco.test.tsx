@@ -295,6 +295,24 @@ describe("Marco", () => {
         await aceptarYSalir(persona);
         expect(within(vidrio()).getByRole("status").textContent).toBe("Tu sesión venció.");
       });
+
+      it("si la franja no responde en 15 s, abre el de la duración", async () => {
+        vi.useFakeTimers({ shouldAdvanceTime: true });
+        const reloj = relojFalso();
+        const horario = vi
+          .spyOn(auth, "horario")
+          .mockRejectedValueOnce(sinConexion())
+          .mockReturnValueOnce(new Promise<Horario>(() => undefined));
+        await montar({ reloj });
+        await caer(FUERA_DE_HORARIO);
+        expect(horario).toHaveBeenCalledTimes(2);
+        // Con shouldAdvanceTime el tiempo real se suma: el margen de 5 s evita que la carga cruce el borde.
+        await avanzar(10_000, reloj);
+        expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+        await avanzar(5_000, reloj);
+        expect(screen.getByRole("alertdialog", { name: SESION_VENCIO })).toHaveAccessibleDescription(TEXTO_SESION);
+        expect(aceptar()).toHaveFocus();
+      });
     });
   });
 

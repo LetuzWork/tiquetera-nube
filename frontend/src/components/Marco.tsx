@@ -13,6 +13,9 @@ import { Vidrio } from "./Vidrio";
 
 type TextosFin = ReturnType<typeof textosFin>;
 
+// Sin este plazo, una consulta que nunca responde deja el vidrio desenfocado y sin diálogo.
+const MS_ESPERA_FRANJA = 15_000;
+
 export function Marco() {
   const { fin, cerrarSesion } = useAuth();
   const { horario, actualizar } = useJornada();
@@ -33,13 +36,17 @@ export function Marco() {
     }
     // D-07: sin franja no hay texto para "La jornada terminó"; se consulta una vez y el diálogo se abre responda o no.
     let vigente = true;
-    void actualizar()
-      .catch(() => null)
-      .then((recibido) => {
-        if (vigente) setDialogo((abierto) => abierto ?? textosFin(fin, recibido));
-      });
+    let plazo: ReturnType<typeof setTimeout> | undefined;
+    const sinRespuesta = new Promise<null>((resolver) => {
+      plazo = setTimeout(() => resolver(null), MS_ESPERA_FRANJA);
+    });
+    void Promise.race([actualizar().catch(() => null), sinRespuesta]).then((recibido) => {
+      clearTimeout(plazo);
+      if (vigente) setDialogo((abierto) => abierto ?? textosFin(fin, recibido));
+    });
     return () => {
       vigente = false;
+      clearTimeout(plazo);
     };
   }, [fin, horario, actualizar]);
 
