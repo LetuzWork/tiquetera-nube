@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.container import Container, construir_container
-from app.api.routers import auth, reportes, tickets, usuarios
+from app.api.routers import auth, demo, reportes, tickets, usuarios
 from app.core.config import Settings, get_settings
 from app.domain.errors import ErrorDominio
 
@@ -28,7 +28,7 @@ def create_app(settings: Settings | None = None, container: Container | None = N
         CORSMiddleware,
         allow_origins=origenes,
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PATCH"],
+        allow_methods=["GET", "POST", "PATCH", *(["PUT"] if settings.reloj_demo_activo else [])],
         allow_headers=["Content-Type"],
     )
 
@@ -64,6 +64,9 @@ def create_app(settings: Settings | None = None, container: Container | None = N
 
     for r in (auth.router, tickets.router, reportes.router, usuarios.router):
         app.include_router(r, prefix=settings.api_prefix)
+    if settings.reloj_demo_activo:
+        logging.getLogger(__name__).warning("Reloj de demostración activo en %s/demo/reloj", settings.api_prefix)
+        app.include_router(demo.router, prefix=settings.api_prefix)
 
     @app.get(f"{settings.api_prefix}/health", tags=["health"])
     def health() -> dict[str, str]:
