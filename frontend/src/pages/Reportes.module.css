@@ -1,0 +1,152 @@
+.reportes {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.encabezado {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "titulo exportar"
+    "periodo periodo";
+  align-items: center;
+  gap: 0.75rem 1rem;
+  min-width: 0;
+}
+
+.titulo {
+  grid-area: titulo;
+  min-width: 0;
+  font: var(--tq-tipo-titulo-panel);
+  letter-spacing: var(--tq-tracking-titulo-panel);
+}
+
+.periodo {
+  grid-area: periodo;
+  display: flex;
+  min-width: 0;
+}
+
+.exportar {
+  grid-area: exportar;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.contenido {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 1rem;
+  border-radius: var(--tq-radio-grupo);
+  background: var(--tq-superficie);
+  box-shadow: 0 0 0 1px rgba(20, 35, 60, 0.06);
+}
+
+.nombre {
+  font: var(--tq-tipo-leyenda);
+  letter-spacing: var(--tq-tracking-leyenda);
+  color: var(--tq-texto-2);
+}
+
+.cifra {
+  order: -1;
+  display: flex;
+  align-items: flex-end;
+  min-height: 2.625rem;
+  margin: 0;
+  font: var(--tq-tipo-titulo-panel);
+  font-size: 2.25rem;
+  letter-spacing: var(--tq-tracking-titulo-panel);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.cifra[data-sin-datos="true"] {
+  font: var(--tq-tipo-titulo-2);
+  letter-spacing: var(--tq-tracking-titulo-2);
+  color: var(--tq-texto-2);
+}
+
+.graficos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.ancho {
+  display: grid;
+  min-width: 0;
+}
+
+.bloque {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem;
+  border-radius: var(--tq-radio-grupo);
+  background: var(--tq-superficie);
+  box-shadow: 0 0 0 1px rgba(20, 35, 60, 0.06);
+  text-align: center;
+}
+
+.iconoBloque {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--tq-texto-3);
+}
+
+.textoError {
+  font: var(--tq-tipo-titular);
+  letter-spacing: var(--tq-tracking-titular);
+  color: var(--tq-texto);
+}
+
+.textoVacio {
+  font: var(--tq-tipo-cuerpo);
+  color: var(--tq-texto-2);
+}
+
+.cargando {
+  padding: 2.5rem 1rem;
+  font: var(--tq-tipo-secundario);
+  letter-spacing: var(--tq-tracking-secundario);
+  color: var(--tq-texto-2);
+  text-align: center;
+}
+
+@media (min-width: 48rem) {
+  .encabezado {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas: "titulo periodo exportar";
+  }
+
+  .tarjetas {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .graficos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ancho {
+    grid-column: 1 / -1;
+  }
+}
