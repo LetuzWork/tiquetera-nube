@@ -32,6 +32,27 @@ class OffsetClock:
         return datetime.now(UTC) + self._desfase
 
 
+class RelojAjustable:
+    def __init__(self, base: Clock | None = None, inicio: datetime | None = None) -> None:
+        self._base = base or SystemClock()
+        self._desfase: timedelta | None = None
+        if inicio is not None:
+            self.ajustar(inicio)
+
+    @property
+    def simulado(self) -> bool:
+        return self._desfase is not None
+
+    def ahora(self) -> datetime:
+        return self._base.ahora() + (self._desfase or timedelta(0))
+
+    def ajustar(self, instante: datetime) -> None:
+        self._desfase = _aware(instante) - self._base.ahora()
+
+    def real(self) -> None:
+        self._desfase = None
+
+
 def _aware(instante: datetime) -> datetime:
     if instante.tzinfo is None:
         raise ValueError("El instante debe incluir zona horaria")

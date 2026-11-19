@@ -9,7 +9,7 @@ from app.adapters.csv_exporter import CsvExporter
 from app.adapters.json_ticket_repository import JsonTicketRepository
 from app.adapters.ldap_auth_provider import ConfigLdap, LdapAuthProvider
 from app.adapters.mock_auth_provider import MockAuthProvider
-from app.core.clock import Clock, OffsetClock, SystemClock
+from app.core.clock import Clock, OffsetClock, RelojAjustable, SystemClock
 from app.core.config import Settings
 from app.core.security import TokenService
 from app.domain.enums import Rol
@@ -36,6 +36,7 @@ class Container:
     tickets: TicketService
     reportes: ReportService
     exportador: TabularExporter
+    reloj_demo: RelojAjustable | None = None
 
 
 class ProveedorDirectorio(Autenticador, DirectorioGrupos, Protocol):
@@ -49,6 +50,10 @@ def construir_container(
     repositorio: object | None = None,
 ) -> Container:
     clock = clock or _reloj(settings)
+    reloj_demo: RelojAjustable | None = None
+    if settings.reloj_demo_activo:
+        reloj_demo = clock if isinstance(clock, RelojAjustable) else RelojAjustable(clock)
+        clock = reloj_demo
     zona = ZoneInfo(settings.access_timezone)
     mapeador = MapeadorRoles(
         {
@@ -77,15 +82,18 @@ def construir_container(
         tickets=TicketService(lector, escritor, directorio, clock),
         reportes=ReportService(lector, zona),
         exportador=CsvExporter(settings.csv_delimiter),
+        reloj_demo=reloj_demo,
     )
 
 
 def _reloj(settings: Settings) -> Clock:
-    if settings.clock_override is None:
-        return SystemClock()
     instante = settings.clock_override
-    if instante.tzinfo is None:
+    if instante is not None and instante.tzinfo is None:
         instante = instante.replace(tzinfo=ZoneInfo(settings.access_timezone))
+    if settings.reloj_demo_activo:
+        return RelojAjustable(SystemClock(), instante)
+    if instante is None:
+        return SystemClock()
     return OffsetClock(instante)
 
 

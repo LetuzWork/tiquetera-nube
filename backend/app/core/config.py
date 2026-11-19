@@ -44,6 +44,7 @@ class Settings(BaseSettings):
     access_window_end: time = time(18, 0)
     access_days: str = "1,2,3,4,5"
     clock_override: datetime | None = None
+    demo_reloj: bool = False
 
     login_max_attempts: int = Field(default=5, ge=1)
     login_lockout_minutes: int = Field(default=10, ge=1)
@@ -74,9 +75,15 @@ class Settings(BaseSettings):
                 raise ValueError("AUTH_PROVIDER=mock no está permitido en producción")
             if self.clock_override is not None:
                 raise ValueError("CLOCK_OVERRIDE no está permitido en producción")
+            if self.demo_reloj:
+                raise ValueError("DEMO_RELOJ no está permitido en producción")
             if not self.cookie_secure:
                 raise ValueError("COOKIE_SECURE debe ser true en producción")
         return self
+
+    @property
+    def reloj_demo_activo(self) -> bool:
+        return self.app_env == "development" and self.demo_reloj
 
     @property
     def dias_habilitados(self) -> frozenset[int]:
