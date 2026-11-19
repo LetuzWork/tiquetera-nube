@@ -1,8 +1,8 @@
-import type { Estado, Prioridad } from "../theme/theme";
-
-export type { Estado, Prioridad };
-
 export type Rol = "admin" | "operador" | "usuario" | "consulta";
+
+export type Estado = "ABIERTO" | "EN_PROGRESO" | "RESUELTO" | "CERRADO";
+
+export type Prioridad = "BAJA" | "MEDIA" | "ALTA" | "CRITICA";
 
 export type Categoria = "Hardware" | "Software" | "Red" | "Accesos" | "Otro";
 

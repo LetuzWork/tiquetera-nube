@@ -29,12 +29,18 @@ export function construirUrl(ruta: string, query?: Query): string {
   return url.pathname + url.search;
 }
 
+const ESTADOS_SIN_SERVIDOR = new Set([500, 502, 503, 504]);
+
+const sinConexion = () => new ApiError(0, "SIN_CONEXION", "No se pudo contactar al servidor.", {});
+const sinRespuesta = () => new ApiError(0, "SIN_RESPUESTA", "El servidor no respondió. Probá de nuevo.", {});
+
 export async function api<T>(
   ruta: string,
-  opciones: { metodo?: "GET" | "POST" | "PATCH"; cuerpo?: unknown; query?: Query } = {},
+  opciones: { metodo?: "GET" | "POST" | "PATCH" | "PUT"; cuerpo?: unknown; query?: Query; senal?: AbortSignal } = {},
 ): Promise<T> {
   const metodo = opciones.metodo ?? "GET";
   const conCuerpo = metodo !== "GET";
+  const { senal } = opciones;
   let respuesta: Response;
   try {
     respuesta = await fetch(construirUrl(ruta, opciones.query), {
@@ -42,13 +48,18 @@ export async function api<T>(
       credentials: "include",
       headers: conCuerpo ? { "Content-Type": "application/json" } : undefined,
       body: conCuerpo ? JSON.stringify(opciones.cuerpo ?? {}) : undefined,
+      signal: senal,
     });
   } catch {
-    throw new ApiError(0, "SIN_CONEXION", "No se pudo contactar al servidor.", {});
+    throw senal?.aborted ? sinRespuesta() : sinConexion();
   }
   if (respuesta.status === 204) return undefined as T;
   const datos = (await respuesta.json().catch(() => ({}))) as Record<string, unknown>;
+  // El aborto durante la lectura del cuerpo deja datos vacíos: no puede pasar por una respuesta válida.
+  if (senal?.aborted) throw sinRespuesta();
   if (!respuesta.ok) {
+    // El proxy de Vite responde 500 vacío con el backend caído (D-24).
+    if (ESTADOS_SIN_SERVIDOR.has(respuesta.status) && typeof datos.codigo !== "string") throw sinConexion();
     const codigo = typeof datos.codigo === "string" ? datos.codigo : "ERROR";
     const detalle = typeof datos.detalle === "string" ? datos.detalle : "Ocurrió un error inesperado.";
     if (respuesta.status === 401 && ruta !== "/auth/login" && ruta !== "/auth/me") {

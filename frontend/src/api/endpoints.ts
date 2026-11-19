@@ -5,7 +5,8 @@ type CambiosTicket = Partial<Pick<Ticket, "titulo" | "descripcion" | "categoria"
 
 export const auth = {
   horario: () => api<Horario>("/auth/horario"),
-  login: (usuario: string, password: string) => api<Me>("/auth/login", { metodo: "POST", cuerpo: { usuario, password } }),
+  login: (usuario: string, password: string, senal?: AbortSignal) =>
+    api<Me>("/auth/login", { metodo: "POST", cuerpo: { usuario, password }, senal }),
   logout: () => api<void>("/auth/logout", { metodo: "POST" }),
   me: () => api<Me>("/auth/me"),
 };
@@ -26,6 +27,18 @@ export const tickets = {
 
 export const usuarios = {
   responsables: () => api<Persona[]>("/usuarios/responsables"),
+};
+
+export interface EstadoRelojDemo {
+  simulado: boolean;
+  ahora: string;
+}
+
+export type AjusteRelojDemo = { hora: string } | { real: true };
+
+export const demo = {
+  reloj: () => api<EstadoRelojDemo>("/demo/reloj"),
+  ajustar: (cuerpo: AjusteRelojDemo) => api<Horario>("/demo/reloj", { metodo: "PUT", cuerpo }),
 };
 
 export const reportes = {
