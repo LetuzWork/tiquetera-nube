@@ -1,0 +1,9 @@
+﻿id;titulo;categoria;estado;prioridad;solicitante;responsable;creado_en;actualizado_en;comentarios;descripcion
+TQ-000001;Cambio de tóner en la sala de reuniones;Hardware;CERRADO;BAJA;u.multi;u.admin;2026-10-28T21:43:51-03:00;2026-10-29T03:58:51-03:00;1;Las copias salen con franjas grises en el margen izquierdo.
+TQ-000002;Instalar licencia de Office en notebook nueva;Software;RESUELTO;BAJA;u.usuario;u.operador;2026-11-01T19:43:51-03:00;2026-11-01T23:58:51-03:00;1;La notebook entregada a Compras no tiene Office activado.
+TQ-000003;La impresora del tercer piso no imprime;Hardware;RESUELTO;ALTA;u.usuario;u.operador;2026-11-04T15:43:51-03:00;2026-11-05T15:32:55-03:00;1;Muestra 'error de bandeja 2' y deja la cola de impresión trabada.
+TQ-000004;Alta de usuario en el sistema de legajos;Accesos;ABIERTO;MEDIA;u.multi;;2026-11-05T01:43:51-03:00;2026-11-05T01:43:51-03:00;0;Ingresa una persona nueva a RR.HH. el lunes y necesita lectura de legajos.
+TQ-000005;La VPN se corta cada 10 minutos;Red;ABIERTO;CRITICA;u.usuario;;2026-11-05T17:43:51-03:00;2026-11-05T10:35:13-03:00;1;Desde el cambio de router la VPN se desconecta y pide el token otra vez.
+TQ-000006;No puedo entrar a la carpeta compartida de Alumnos;Accesos;CERRADO;ALTA;u.usuario;u.operador;2026-11-10T10:01:55-03:00;2026-11-10T10:04:42-03:00;1;Desde esta mañana me aparece acceso denegado al abrir \\srv-ad\Alumnos. Ayer andaba bien y necesito entregar un trabajo hoy.
+TQ-000007;No cargan las imagenes;Software;RESUELTO;BAJA;u.usuario;u.operador;2026-11-05T11:16:23-03:00;2026-11-05T11:19:25-03:00;2;El modulo instructivo de SAP para MTFs no muestra las imagenes del paso a paso
+TQ-000008;El monitor de la PC 14 parpadea;Hardware;EN_PROGRESO;ALTA;u.usuario;u.operador;2026-11-05T12:00:53-03:00;2026-11-05T12:02:07-03:00;1;Desde esta mañana el monitor del laboratorio 2, PC 14, parpadea cada pocos segundos y no se puede trabajar.
