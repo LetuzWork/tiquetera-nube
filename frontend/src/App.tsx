@@ -1,49 +1,32 @@
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ProveedorAuth } from "./auth/AuthContext";
 import { RutaProtegida } from "./auth/guards";
-import { Layout } from "./components/Layout";
+import { Marco } from "./components/Marco";
+import { RelojDemo } from "./components/RelojDemo";
+import { ProveedorJornada } from "./jornada/JornadaContext";
 import { Bandeja } from "./pages/Bandeja";
 import { DetalleTicket } from "./pages/DetalleTicket";
-import { NuevoTicket } from "./pages/NuevoTicket";
+import { IniciarSesion } from "./pages/IniciarSesion";
+import { NoEncontrado } from "./pages/NoEncontrado";
 import { Reportes } from "./pages/Reportes";
-import { Ventanilla } from "./pages/Ventanilla";
-import { ProveedorTema } from "./theme/ThemeContext";
 
-function NoEncontrado() {
+export function App({ relojMonotono }: { relojMonotono?: () => number }) {
   return (
-    <section className="pagina">
-      <p className="vacio">Esta ventanilla no existe.</p>
-      <Link to="/bandeja" className="opcion">
-        Volver a la bandeja
-      </Link>
-    </section>
-  );
-}
-
-export function App() {
-  return (
-    <ProveedorTema>
-      <ProveedorAuth>
+    <ProveedorAuth relojMonotono={relojMonotono}>
+      <ProveedorJornada relojMonotono={relojMonotono}>
         <BrowserRouter>
           <Routes>
-            <Route path="/ventanilla" element={<Ventanilla />} />
+            <Route path="/ventanilla" element={<IniciarSesion />} />
             <Route
               element={
                 <RutaProtegida>
-                  <Layout />
+                  <Marco />
                 </RutaProtegida>
               }
             >
               <Route index element={<Navigate to="/bandeja" replace />} />
               <Route path="/bandeja" element={<Bandeja />} />
-              <Route
-                path="/tickets/nuevo"
-                element={
-                  <RutaProtegida permiso="ticket:crear">
-                    <NuevoTicket />
-                  </RutaProtegida>
-                }
-              />
+              <Route path="/tickets/nuevo" element={<Bandeja nuevo />} />
               <Route path="/tickets/:numero" element={<DetalleTicket />} />
               <Route
                 path="/reportes"
@@ -57,7 +40,8 @@ export function App() {
             </Route>
           </Routes>
         </BrowserRouter>
-      </ProveedorAuth>
-    </ProveedorTema>
+        <RelojDemo />
+      </ProveedorJornada>
+    </ProveedorAuth>
   );
 }

@@ -1,0 +1,109 @@
+.pantalla {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: 3rem;
+  overflow-x: clip;
+  background: var(--tq-fondo);
+  color: #14233c;
+}
+
+.pantalla[data-tinta] {
+  background: linear-gradient(180deg, var(--tq-cielo-arriba), var(--tq-cielo-abajo));
+  color: var(--tq-cielo-tinta);
+}
+
+.cabecera {
+  display: grid;
+  gap: clamp(1.5rem, 8vh, 4rem);
+  padding: 1.25rem clamp(1rem, 3vw, 2rem) 0;
+}
+
+.logo {
+  display: flex;
+}
+
+.hora {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.reloj {
+  font: var(--tq-tipo-reloj);
+  letter-spacing: var(--tq-tracking-reloj);
+  font-variant-numeric: tabular-nums;
+}
+
+.franja {
+  font: 500 0.9375rem/1.4 var(--tq-fuente);
+  letter-spacing: var(--tq-tracking-titular);
+  font-variant-numeric: tabular-nums;
+}
+
+.panel {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.estado {
+  font: var(--tq-tipo-titular);
+  letter-spacing: var(--tq-tracking-titular);
+}
+
+.aviso {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--tq-radio-grupo);
+  background: var(--tq-aviso-fondo);
+  font: var(--tq-tipo-secundario);
+  letter-spacing: var(--tq-tracking-secundario);
+  font-variant-numeric: tabular-nums;
+}
+
+.avisoTitulo {
+  font: var(--tq-tipo-titular);
+  letter-spacing: var(--tq-tracking-titular);
+  color: var(--tq-aviso);
+}
+
+.titulos {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.titulo {
+  font: var(--tq-tipo-titulo-2);
+  letter-spacing: var(--tq-tracking-titulo-2);
+}
+
+.subtitulo {
+  font: var(--tq-tipo-secundario);
+  letter-spacing: var(--tq-tracking-secundario);
+}
+
+.formulario {
+  display: grid;
+  gap: 1rem;
+}
+
+.envio {
+  display: grid;
+}
+
+.error {
+  font: var(--tq-tipo-secundario);
+  letter-spacing: var(--tq-tracking-secundario);
+  color: var(--tq-peligro);
+}
+
+.error:not(:empty) {
+  margin-bottom: 0.75rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.75rem;
+  background: var(--tq-superficie);
+}
