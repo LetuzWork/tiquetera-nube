@@ -1,0 +1,48 @@
+.vidrio {
+  position: relative;
+  z-index: 1;
+  width: min(72rem, 100% - 2rem);
+  margin: -3.5rem auto 2rem;
+  border-radius: var(--tq-radio-vidrio);
+  background: var(--tq-vidrio-fondo);
+  backdrop-filter: var(--tq-vidrio-filtro);
+  -webkit-backdrop-filter: var(--tq-vidrio-filtro);
+  box-shadow: var(--tq-vidrio-sombra);
+  color: var(--tq-texto);
+}
+
+.vidrio[data-variante="angosta"] {
+  width: min(24rem, 100% - 2rem);
+  margin: 0 auto;
+}
+
+.contenido {
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  transition: filter 600ms ease-out, opacity 600ms ease-out;
+}
+
+.contenido[data-desenfocado="true"] {
+  filter: blur(10px);
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contenido {
+    transition: opacity var(--tq-duracion-color) ease-out;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .vidrio {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .vidrio {
+    background: #ffffff;
+  }
+}
