@@ -1,0 +1,98 @@
+.reloj {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1rem;
+  z-index: 60;
+  max-width: calc(100% - 2rem);
+  transition:
+    opacity var(--tq-duracion-resorte) var(--tq-resorte),
+    transform var(--tq-duracion-resorte) var(--tq-resorte);
+}
+
+@starting-style {
+  .reloj {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+.reloj > div > button {
+  background: var(--tq-superficie);
+  box-shadow: var(--tq-sombra-flotante);
+}
+
+/* El botón está abajo de todo: el panel del Desplegable abre hacia arriba. */
+.reloj > div > [role="group"] {
+  top: auto;
+  bottom: calc(100% + 0.5rem);
+}
+
+.contenido {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+
+.accesos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.otra {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.campo {
+  display: grid;
+  flex: 1;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.etiqueta {
+  font: var(--tq-tipo-leyenda);
+  letter-spacing: var(--tq-tracking-leyenda);
+  color: var(--tq-texto-2);
+}
+
+.entrada {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--tq-alto-control);
+  padding: 0 0.75rem;
+  border: 0;
+  border-radius: 0.625rem;
+  background: var(--tq-superficie-2);
+  color: var(--tq-texto);
+  font: var(--tq-tipo-cuerpo);
+  font-variant-numeric: tabular-nums;
+}
+
+.entrada:focus-visible {
+  outline: 2px solid var(--tq-acento);
+  outline-offset: 2px;
+}
+
+.error {
+  margin: 0;
+  font: var(--tq-tipo-secundario);
+  letter-spacing: var(--tq-tracking-secundario);
+  color: var(--tq-peligro);
+}
+
+/* En angosto el aviso de sesión, abajo al centro, ocupa casi todo el ancho: el reloj sube por encima. */
+@media (max-width: 767px) {
+  .reloj {
+    bottom: calc(1.5rem + var(--tq-alto-control) + 1.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reloj {
+    transition: opacity var(--tq-duracion-color) ease-out;
+  }
+}

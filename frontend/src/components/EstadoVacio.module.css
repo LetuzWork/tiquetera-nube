@@ -1,0 +1,19 @@
+.vacio {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.icono {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--tq-texto-3);
+}
+
+.titulo {
+  font: var(--tq-tipo-titulo-2);
+  letter-spacing: var(--tq-tracking-titulo-2);
+  color: var(--tq-texto);
+}

@@ -1,13 +1,26 @@
-param(
+﻿param(
     [string]$BaseDN = "DC=tiquetera,DC=local",
-    [string]$SufijoUPN = "tiquetera.local"
+    [string]$SufijoUPN = "tiquetera.local",
+    [switch]$GenerarClaves
 )
 
 $ErrorActionPreference = "Stop"
 Import-Module ActiveDirectory
 
-$claveLab = Read-Host -AsSecureString "Contraseña para los usuarios de laboratorio"
-$claveServicio = Read-Host -AsSecureString "Contraseña para svc-tiquetera"
+function Nueva-Clave {
+    $c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"
+    "Tq-" + (-join (1..14 | ForEach-Object { $c[(Get-Random -Maximum $c.Length)] })) + "#7"
+}
+
+if ($GenerarClaves) {
+    $textoLab = Nueva-Clave
+    $textoServicio = Nueva-Clave
+    $claveLab = ConvertTo-SecureString $textoLab -AsPlainText -Force
+    $claveServicio = ConvertTo-SecureString $textoServicio -AsPlainText -Force
+} else {
+    $claveLab = Read-Host -AsSecureString "Contraseña para los usuarios de laboratorio"
+    $claveServicio = Read-Host -AsSecureString "Contraseña para svc-tiquetera"
+}
 
 $ouRaiz = "OU=Tiquetera,$BaseDN"
 $ouUsuarios = "OU=Usuarios,$ouRaiz"
@@ -57,6 +70,7 @@ foreach ($u in $usuarios) {
             -PasswordNeverExpires $true `
             -Enabled $u.Habilitado
     }
+    if ($GenerarClaves) { Set-ADAccountPassword -Identity $u.Sam -Reset -NewPassword $claveLab }
     foreach ($g in $u.Grupos) { Add-ADGroupMember -Identity $g -Members $u.Sam }
 }
 
@@ -71,6 +85,12 @@ if (-not (Get-ADUser -Filter "SamAccountName -eq 'svc-tiquetera'" -ErrorAction S
         -PasswordNeverExpires $true `
         -CannotChangePassword $true `
         -Enabled $true
+}
+
+if ($GenerarClaves) {
+    Set-ADAccountPassword -Identity "svc-tiquetera" -Reset -NewPassword $claveServicio
+    Write-Output "CLAVE_USUARIOS_LAB=$textoLab"
+    Write-Output "CLAVE_SVC_TIQUETERA=$textoServicio"
 }
 
 Write-Host "`nDirectorio poblado:" -ForegroundColor Green

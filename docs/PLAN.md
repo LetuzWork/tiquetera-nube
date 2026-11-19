@@ -9,13 +9,16 @@ Ticketera web de soporte con autenticación contra Active Directory (LDAP/LDAPS)
 | Capa | Tecnología | Motivo |
 |---|---|---|
 | Frontend | React 18 + TypeScript + Vite + React Router | SPA liviana, tipado estricto |
-| Estilos | CSS custom properties + CSS Modules | Identidad propia, sin kits genéricos (ver `DISENO.md`) |
+| Estilos | CSS custom properties + CSS Modules — sistema "Cielo" (ver `DISENO.md`) | Identidad propia, sin kits genéricos |
+| Íconos | `lucide-react` | Trazo fino y coherente, sin kit de componentes |
+| Fuente | `@fontsource-variable/albert-sans` | Empaquetada con el build, sin recursos externos |
 | Backend | FastAPI + Pydantic v2 + Uvicorn | Validación declarativa de entradas, OpenAPI automático |
 | Entorno Python | pipenv (`backend/Pipfile`) | Requisito del TP |
 | Directorio | `ldap3` contra Windows Server AD en VirtualBox | LDAPS 636, bind de servicio + bind del usuario |
 | Sesión | JWT firmado (PyJWT) en cookie `HttpOnly` + `SameSite=Strict` | No expone el token a JS |
 | Persistencia | `data/tickets.json` con escritura atómica + `filelock` | Requisito: archivo local |
 | Tests | pytest + httpx | Servicios testeables gracias a inversión de dependencias |
+| Tests de frontend | Vitest + Testing Library | Lógica de la jornada y componentes probados en jsdom |
 
 ## 3. Estructura de carpetas
 
@@ -65,11 +68,18 @@ Tiquetera Nube/
 ├─ frontend/
 │  ├─ .env.example
 │  └─ src/
-│     ├─ theme/                 tokens.css, theme.ts, ThemeContext.tsx
+│     ├─ theme/                 tokens.css del sistema "Cielo" y sus comprobaciones
+│     ├─ jornada/               hora del servidor, estado de la jornada, cielo y horizonte
 │     ├─ api/                   cliente fetch tipado (credentials: "include")
-│     ├─ auth/                  AuthContext, ProtectedRoute, <Can permiso=…>
-│     ├─ components/            Talon, Sello, Perforado, Ponchado, Libreta…
-│     └─ pages/                 Login, Bandeja, NuevoTicket, DetalleTicket, Reportes
+│     ├─ auth/                  AuthContext, guards, sesión, caídas e ingreso
+│     ├─ components/            Logo, Avatar, Boton, Campo, AreaTexto, Selector, Segmentado, Buscador, Desplegable, GrupoCampos, EstadoVacio, Aviso, Avisos, Confirmacion, Menu, IndicadorEstado, MarcaPrioridad, GraficoBarras, GraficoColumnas, DialogoNuevoTicket, Horizonte, CieloJornada, Vidrio, Navegacion, Cuenta, Marco
+│     ├─ bandeja/               vista en la dirección, grupos "Hoy" y "Anteriores", resumen de hoy y useBandeja
+│     ├─ nuevo/                 validación del ticket nuevo
+│     ├─ detalle/               línea de actividad y useResponsables
+│     ├─ reportes/              períodos, series de los gráficos y horas
+│     ├─ utils/                 zona del servidor, textos de presentación, secciones
+│     ├─ test/                  preparación de Vitest, fábricas y ayudantes de prueba
+│     └─ pages/                 IniciarSesion, Bandeja (con el diálogo de nuevo ticket), DetalleTicket, Reportes, NoEncontrado
 ├─ scripts/ad/                  PowerShell para montar el DC del laboratorio
 └─ docs/
    ├─ PLAN.md
@@ -147,7 +157,7 @@ La autorización se valida **siempre en el backend** (`require(Permiso)` + chequ
 - `AccessSchedulePolicy(clock, zona, inicio, fin, dias)` → `permitido(): bool` y `proxima_apertura(): datetime`.
 - Se evalúa en `POST /auth/login` **antes** de tocar el AD (no se filtran credenciales fuera de horario).
 - El JWT expira como máximo al cierre de la franja (`exp = min(ahora + TTL, fin_franja)`), y `get_current_user` re-valida la franja en cada request → al pasar las 18:00 la sesión muere.
-- Respuesta fuera de horario: `403` con `{codigo: "FUERA_DE_HORARIO", apertura: "..."}` para que el front muestre la pantalla de "ventanilla cerrada".
+- Respuesta fuera de horario: `403` con `{codigo: "FUERA_DE_HORARIO", apertura: "..."}` para que el front muestre la pantalla de "fuera del horario".
 - `CLOCK_OVERRIDE` (solo `APP_ENV=development`) inyecta un `FixedClock` para capturar la evidencia sin esperar a las 18:01.
 
 ## 8. Autenticación LDAP

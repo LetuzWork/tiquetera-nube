@@ -10,3 +10,5 @@ __pycache__/
 node_modules/
 frontend/dist/
 *.log
+*.local.txt
+*.local.ps1

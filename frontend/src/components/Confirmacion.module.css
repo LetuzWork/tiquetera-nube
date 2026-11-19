@@ -1,0 +1,49 @@
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: var(--tq-velo);
+}
+
+.panel {
+  display: grid;
+  gap: 0.5rem;
+  width: min(24rem, 100%);
+  padding: 1.5rem;
+  border-radius: var(--tq-radio-dialogo);
+  background: var(--tq-superficie);
+  color: var(--tq-texto);
+  box-shadow: var(--tq-sombra-flotante);
+}
+
+.titulo {
+  font: var(--tq-tipo-titulo-2);
+  letter-spacing: var(--tq-tracking-titulo-2);
+}
+
+.texto {
+  margin-bottom: 1rem;
+  font: var(--tq-tipo-cuerpo);
+  color: var(--tq-texto-2);
+}
+
+.acciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .velo {
+    background: var(--tq-fondo);
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .velo {
+    background: var(--tq-fondo);
+  }
+}
